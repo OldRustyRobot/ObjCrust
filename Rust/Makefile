@@ -1,25 +1,20 @@
 all: libobjcrust.a
 
-bytecodes: objcrust.rs
-	rustc --emit-llvm --target i386-apple-darwin objcrust.rs
-	mv objcrust.bc objcrust-i386.bc
-	rustc --emit-llvm --target armv7-apple-darwin objcrust.rs
-	mv objcrust.bc objcrust-armv7.bc
-	rustc --emit-llvm --target armv7s-apple-darwin objcrust.rs
-	mv objcrust.bc objcrust-armv7s.bc
+ARCH_LIBS = objcrust-i386.ia \
+	objcrust-armv7.ia \
+	objcrust-armv7s.ia
 
-objects: bytecodes
-	clang -arch i386 -c objcrust-i386.bc
-	clang -arch armv7 -c objcrust-armv7.bc
-	clang -arch armv7s -c objcrust-armv7s.bc
+objcrust-%.bc: objcrust.rs
+	rustc --emit bc --target $*-apple-darwin objcrust.rs -o $@
 
-libraries: objects
-	ar -cr objcrust-i386.a objcrust-i386.o
-	ar -cr objcrust-armv7.a objcrust-armv7.o
-	ar -cr objcrust-armv7s.a objcrust-armv7s.o
+objcrust-%.o: objcrust-%.bc
+	clang -arch $* -c $<
 
-libobjcrust.a: libraries
-	lipo -create -output libobjcrust.a objcrust-i386.a objcrust-armv7.a objcrust-armv7s.a
+objcrust-%.ia: objcrust-%.o
+	ar -cr $@ $<
+
+libobjcrust.a: $(ARCH_LIBS)
+	lipo -create -output libobjcrust.a $(ARCH_LIBS)
 
 clean:
-	rm -f *.bc *.o *.a
+	rm -f *.bc *.o *.a *.ia
