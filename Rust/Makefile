@@ -5,7 +5,7 @@ ARCH_LIBS = objcrust-i386.ia \
 	objcrust-armv7s.ia
 
 objcrust-%.bc: objcrust.rs
-	rustc --emit bc --target $*-apple-darwin objcrust.rs -o $@
+	rustc --emit bc -g --target $*-apple-darwin objcrust.rs -o $@
 
 objcrust-%.o: objcrust-%.bc
 	clang -arch $* -c $<
