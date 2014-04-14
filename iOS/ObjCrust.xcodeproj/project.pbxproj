@@ -520,8 +520,7 @@
 				INFOPLIST_FILE = Resources/Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/vhbit/projects/ObjCrust/Rust,
-					"/Users/vhbit/projects/external/rust/build_ios/x86_64-apple-darwin/stage2/lib/rustlib/arm-apple-ios/lib",
+					"$(PROJECT_DIR)/../Rust",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -546,8 +545,7 @@
 				INFOPLIST_FILE = Resources/Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/vhbit/projects/ObjCrust/Rust,
-					"/Users/vhbit/projects/external/rust/build_ios/x86_64-apple-darwin/stage2/lib/rustlib/arm-apple-ios/lib",
+					"$(PROJECT_DIR)/../Rust",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -635,6 +633,7 @@
 				C42EB7EE18FBD66E009A9597 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
