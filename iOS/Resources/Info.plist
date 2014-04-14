@@ -16,7 +16,7 @@
 		<string>Icon-ipad@2x.png</string>
 	</array>
 	<key>CFBundleIdentifier</key>
-	<string>com.gilshapira.objcrust</string>
+	<string>net.vhbit.general.ruststd</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>

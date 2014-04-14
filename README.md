@@ -1,32 +1,35 @@
 # ObjCrust
 
-A proof of concept for using Rust to create an iOS static library.
+A modified ObjCrust which uses Rust
+cross-compiler. [Cross-compiler](https://github.com/vhbit/Rust/tree/ios)
+needs to be built first (note: it is on a separate branch now, so
+don't forget to checkout it before building)
 
 Requires Xcode 5 and the iOS 7 SDK.
 
 Based on [doublec/rust-from-c-example](https://github.com/doublec/rust-from-c-example)
 
-
 ## Status
 
 What works:
 
-- Rust code exposes simple functions for working with integers and floats, using values, pointers and structs.
-- Make file creates architecture-specific libraries for the simulator (`i386`) and devices (`armv7` and `armv7s`).
-- Creates universal static library for linking in iOS binary.
-- iOS project builds and runs on simulator and devices.
+- compiles with standard library + native runtime
 
-What doesn't work:
+What doesn't work yet:
 
-- Compiles without standard library (maybe try with rust-core?)
-- When running on Simulator: Functions that return structs with float members cause a crash (maybe related to [issue #5744](https://github.com/mozilla/rust/issues/5744)?)
-
+- green/rustuv runtime
+- fat libraries for simulator + device
 
 ## Usage
 
-1. `git clone https://github.com/shilgapira/ObjCrust.git`
-2. `cd ObjCrust/Rust`
-3. `make`
-4. `cd ../iOS`
-5. `open ObjCrust.xcodeproj`
-6. Build and run in Xcode
+1. `git clone https://github.com/vhbit/ObjCrust.git`
+2. change CROSS_IOS_RUST_ROOT to your local cross compiler root
+3. `cd ObjCrust/Rust`
+4. `make`
+5. `cd ../iOS`
+6. `open ObjCrust.xcodeproj`
+7. Build and run in Xcode
+
+Note that for correct standard library work the code should be wrapped
+into a runtime start function (like try_init does now), which
+internally initializes runtime and tasks.
