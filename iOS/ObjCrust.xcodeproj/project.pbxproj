@@ -40,6 +40,7 @@
 		2B8D5136184B599800A0D6A5 /* TestRust.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B8D5135184B599800A0D6A5 /* TestRust.m */; };
 		C42EB83518FBEAE6009A9597 /* libobjcrust.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C42EB82518FBE52A009A9597 /* libobjcrust.a */; };
 		C451C36518F858BF009A9597 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C451C36418F858BF009A9597 /* Security.framework */; };
+		C4A87DAE19477381009A9597 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C42EB7F818FBDBDB009A9597 /* Foundation.framework */; };
 		C4C3F87518F4638C009A9597 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B7326B21778B13900BE08F9 /* main.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 /* End PBXBuildFile section */
 
@@ -87,20 +88,14 @@
 		2B7326C31778B13900BE08F9 /* Unit Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Unit Tests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B7326C41778B13900BE08F9 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		2B8D5135184B599800A0D6A5 /* TestRust.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestRust.m; sourceTree = "<group>"; };
+		C402B74C1924BEF6009A9597 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		C42EB7F818FBDBDB009A9597 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C42EB7FC18FBDBDB009A9597 /* objcrust-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "objcrust-Prefix.pch"; sourceTree = "<group>"; };
 		C42EB7FD18FBDBDB009A9597 /* objcrust.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = objcrust.h; sourceTree = "<group>"; };
 		C42EB7FF18FBDBDB009A9597 /* objcrust.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = objcrust.m; sourceTree = "<group>"; };
 		C42EB80618FBDBDB009A9597 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		C42EB80918FBDBDB009A9597 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		C42EB82318FBE4E1009A9597 /* libobjcrust-176e5cdf-0.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libobjcrust-176e5cdf-0.0.a"; path = "../Rust/libobjcrust-176e5cdf-0.0.a"; sourceTree = "<group>"; };
 		C42EB82518FBE52A009A9597 /* libobjcrust.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libobjcrust.a; path = ../Rust/libobjcrust.a; sourceTree = "<group>"; };
-		C42EB82918FBE938009A9597 /* libstd-aad93cea-0.11-pre.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libstd-aad93cea-0.11-pre.a"; path = "../../external/rust/build_ios/x86_64-apple-darwin/stage2/lib/rustlib/arm-apple-ios/lib/libstd-aad93cea-0.11-pre.a"; sourceTree = "<group>"; };
-		C42EB82B18FBE955009A9597 /* librand-dd29dab1-0.11-pre.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "librand-dd29dab1-0.11-pre.a"; path = "../../external/rust/build_ios/x86_64-apple-darwin/stage2/lib/rustlib/arm-apple-ios/lib/librand-dd29dab1-0.11-pre.a"; sourceTree = "<group>"; };
-		C42EB82D18FBE95C009A9597 /* libnative-83574243-0.11-pre.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libnative-83574243-0.11-pre.a"; path = "../../external/rust/build_ios/x86_64-apple-darwin/stage2/lib/rustlib/arm-apple-ios/lib/libnative-83574243-0.11-pre.a"; sourceTree = "<group>"; };
-		C42EB82F18FBE975009A9597 /* libglob-4e87677f-0.11-pre.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libglob-4e87677f-0.11-pre.a"; path = "../../external/rust/build_ios/x86_64-apple-darwin/stage2/lib/rustlib/arm-apple-ios/lib/libglob-4e87677f-0.11-pre.a"; sourceTree = "<group>"; };
-		C42EB83118FBE97A009A9597 /* libcollections-bfc127c2-0.11-pre.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libcollections-bfc127c2-0.11-pre.a"; path = "../../external/rust/build_ios/x86_64-apple-darwin/stage2/lib/rustlib/arm-apple-ios/lib/libcollections-bfc127c2-0.11-pre.a"; sourceTree = "<group>"; };
-		C42EB83318FBE98B009A9597 /* liburl-c78c721c-0.11-pre.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "liburl-c78c721c-0.11-pre.a"; path = "../../external/rust/build_ios/x86_64-apple-darwin/stage2/lib/rustlib/arm-apple-ios/lib/liburl-c78c721c-0.11-pre.a"; sourceTree = "<group>"; };
 		C451C36418F858BF009A9597 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -109,6 +104,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4A87DAE19477381009A9597 /* Foundation.framework in Frameworks */,
 				C451C36518F858BF009A9597 /* Security.framework in Frameworks */,
 				C42EB83518FBEAE6009A9597 /* libobjcrust.a in Frameworks */,
 			);
@@ -165,7 +161,6 @@
 		2B73269A1778B13800BE08F9 = {
 			isa = PBXGroup;
 			children = (
-				C451C36418F858BF009A9597 /* Security.framework */,
 				2B7326AC1778B13900BE08F9 /* Sources */,
 				2BC80FD617796F520048FC53 /* Rust */,
 				2B391BB71778C81100FF53E7 /* Resources */,
@@ -210,6 +205,7 @@
 		2BC80FD617796F520048FC53 /* Rust */ = {
 			isa = PBXGroup;
 			children = (
+				C402B74C1924BEF6009A9597 /* Makefile */,
 				2B43BA7B187F58080063A594 /* objcrust.h */,
 				2B43BA7C187FCEEB0063A594 /* objcrust.rs */,
 			);
@@ -220,14 +216,8 @@
 		C42EB7F718FBDBDB009A9597 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C42EB83318FBE98B009A9597 /* liburl-c78c721c-0.11-pre.a */,
-				C42EB83118FBE97A009A9597 /* libcollections-bfc127c2-0.11-pre.a */,
-				C42EB82F18FBE975009A9597 /* libglob-4e87677f-0.11-pre.a */,
-				C42EB82D18FBE95C009A9597 /* libnative-83574243-0.11-pre.a */,
-				C42EB82B18FBE955009A9597 /* librand-dd29dab1-0.11-pre.a */,
-				C42EB82918FBE938009A9597 /* libstd-aad93cea-0.11-pre.a */,
+				C451C36418F858BF009A9597 /* Security.framework */,
 				C42EB82518FBE52A009A9597 /* libobjcrust.a */,
-				C42EB82318FBE4E1009A9597 /* libobjcrust-176e5cdf-0.0.a */,
 				C42EB7F818FBDBDB009A9597 /* Foundation.framework */,
 				C42EB80618FBDBDB009A9597 /* XCTest.framework */,
 				C42EB80918FBDBDB009A9597 /* UIKit.framework */,
@@ -380,7 +370,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# this fucking option set to \"legacy\" screwed compilation\nexport COMMAND_MODE=unix2003\n\ncd $PROJECT_DIR/../Rust\n\nmake";
-			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -505,6 +494,10 @@
 		2B7326D61778B13900BE08F9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					armv7,
+					i386,
+				);
 				CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER = YES;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
@@ -521,8 +514,11 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/../Rust",
+					/Users/vhbit/projects/ObjCrust/Rust,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -530,6 +526,10 @@
 		2B7326D71778B13900BE08F9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					armv7,
+					i386,
+				);
 				CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER = YES;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
@@ -546,8 +546,11 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/../Rust",
+					/Users/vhbit/projects/ObjCrust/Rust,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -586,6 +589,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = armv7;
 			};
 			name = Debug;
 		};
@@ -593,6 +597,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = armv7;
 			};
 			name = Release;
 		};

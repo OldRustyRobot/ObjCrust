@@ -1,59 +1,151 @@
-
 #![crate_type = "staticlib"]
-#![allow(ctypes)]
 
+extern crate std;
 extern crate native;
-//extern crate green;
-//extern crate rustuv;
+extern crate libc;
 extern crate collections;
-extern crate url;
-extern crate glob;
 
-use collections::hashmap::HashMap;
-use url::decode;
-use glob::glob;
-use std::comm::channel;
+use std::collections::hashmap::HashMap;
+use libc::c_char;
+use std::comm::{channel, Sender};
 
+use std::iter;
+use std::rt;
+use std::rt::unwind::try;
+use std::rt::task::Task;
+use std::rt::local::Local;
+use std::c_str::CString;
+use native::task;
+
+fn ignore_sigpipe() {
+    use libc;
+    use libc::funcs::posix01::signal::signal;
+    unsafe {
+        assert!(signal(libc::SIGPIPE, libc::SIG_IGN) != -1);
+    }
+}
+
+#[allow(dead_code)]
+fn run_proc_in_task(f: || -> ()) {
+    let something_around_the_top_of_the_stack = 1;
+    let addr = &something_around_the_top_of_the_stack as *int;
+    let my_stack_top = addr as uint;
+    let my_stack_bottom = my_stack_top + 20000 - 512*1024;
+
+    ignore_sigpipe();
+
+    rt::init(0, std::ptr::null());
+    let mut task = task::new((my_stack_bottom, my_stack_top));
+    task.name = Some(std::str::Slice("<extra-task>"));
+    let t = task.run(|| {
+        unsafe {
+            rt::stack::record_stack_bounds(my_stack_bottom, my_stack_top);
+        }
+        f();
+    });
+    drop(t);
+}
+
+// Creates a "fake" task which will be presented always
+// It is required to have at least one task before
+// using std libs as most of them rely on correct
+// runtime initialization
 #[no_mangle]
-fn test_main() {
-    println!("Hello from Rust!");
+pub extern fn register_task(name: *c_char) {
+    let something_around_the_top_of_the_stack = 1;
+    let addr = &something_around_the_top_of_the_stack as *int;
+    let my_stack_top = addr as uint;
+    let my_stack_bottom = my_stack_top + 20000 - 512*1024;
 
-    let url = decode(&"https://example.com/Rust%20(programming%20language)");
-    println!("{}", url);
+    ignore_sigpipe();
 
-    for path in glob("/var/mobile/Applications/D224A5B9-D0DD-4ED9-888F-5599C64D7035/*") {
-        println!("{}", path.display());
+    rt::init(0, std::ptr::null());
+    let mut task = task::new((my_stack_bottom, my_stack_top));
+    task.name = Some(std::str::Owned(unsafe {CString::new(name, false).as_str().unwrap().to_string()}));
+
+    unsafe {
+        rt::stack::record_stack_bounds(my_stack_bottom, my_stack_top);
     }
 
-    spawn(proc() {
-        println!("Hello from task!");
+    Local::put(task);
+}
+
+#[no_mangle]
+pub extern fn deregister_task() {
+    let task: Box<Task> = Local::take();
+    drop(task);
+}
+
+#[no_mangle]
+pub extern fn run_rust_main() {
+    // Testing hack to get command line arguments into Rust
+    println!("Args are {}", std::os::args());
+    let _ = unsafe { try(|| { rust_main() }) };
+}
+
+pub static mut db_sender: *Sender<int> = 0 as *Sender<int>;
+
+#[no_mangle]
+pub extern fn rust_main() {
+    println!("Hello from Rust!");
+    
+    // Hashmap - testing rand module works
+    let mut dict = HashMap::new();
+    dict.insert(3, 4);
+    dict.insert(4, 6);
+    
+    // Using channels
+    let (tx, rx) = channel();
+
+    spawn(proc () {
+        let (sender, receiver) = channel::<int>();
+
+        // Testing if global variable will live
+        // all the time as boxed value
+        unsafe {
+            let x = box sender.clone();
+            db_sender = std::mem::transmute(x);
+        }
+
+        tx.send(sender);
+
+        println!("In daemon receiver");
+        std::io::timer::sleep(3000);
+
+        let mut z = 0;
+
+        loop {
+            let i = receiver.recv();
+            if i == 0 {
+                break;
+            } else {
+                println!("Task got {} [{}]", i, z);
+                z += 1;
+            }
+        }
+
+        println!("Exiting daemon receiver");
     });
+
+
+    let _ = rx.recv();
+
+    unsafe {
+        for i in iter::range(0, 10) {
+            (*db_sender).send(i);
+        }
+    }
 
     let (tx, rx) = channel();
     tx.send(200);
     spawn(proc() {
         let t = rx.recv();
         println!("Got {} from main thread", t);
-    }); 
-
-    let mut x = HashMap::new();
-
-    x.insert("k1", 48);
-    x.insert("k2", 42);
+        fail!()
+    });
     
-    let k4 = "k2";
-    let z = match x.find(&k4) {
-        Some(num) => *num,
-        None => 0
-    };
-
-    println!("Answer to everything is {}", z);
-}
-
-#[no_mangle]
-pub extern fn try_init() {
-    //green::start(0, std::ptr::null(), rustuv::event_loop, test_main);
-    native::start(0, std::ptr::null(), test_main);
+    // Testing exception handling and reporting
+    fail!();
 }
 
 pub struct Pair {
@@ -67,7 +159,7 @@ pub struct Complex {
 }
 
 #[no_mangle]
-pub extern fn get_num() -> uint {        
+pub extern fn get_num() -> uint {
     32
 }
 
