@@ -27,20 +27,12 @@ fn ignore_sigpipe() {
 
 #[allow(dead_code)]
 fn run_proc_in_task(f: || -> ()) {
-    let something_around_the_top_of_the_stack = 1;
-    let addr = &something_around_the_top_of_the_stack as *int;
-    let my_stack_top = addr as uint;
-    let my_stack_bottom = my_stack_top + 20000 - 512*1024;
-
     ignore_sigpipe();
 
     rt::init(0, std::ptr::null());
-    let mut task = task::new((my_stack_bottom, my_stack_top));
+    let mut task = task::new((0, 0));
     task.name = Some(std::str::Slice("<extra-task>"));
     let t = task.run(|| {
-        unsafe {
-            rt::stack::record_stack_bounds(my_stack_bottom, my_stack_top);
-        }
         f();
     });
     drop(t);
@@ -52,20 +44,11 @@ fn run_proc_in_task(f: || -> ()) {
 // runtime initialization
 #[no_mangle]
 pub extern fn register_task(name: *c_char) {
-    let something_around_the_top_of_the_stack = 1;
-    let addr = &something_around_the_top_of_the_stack as *int;
-    let my_stack_top = addr as uint;
-    let my_stack_bottom = my_stack_top + 20000 - 512*1024;
-
     ignore_sigpipe();
 
     rt::init(0, std::ptr::null());
-    let mut task = task::new((my_stack_bottom, my_stack_top));
+    let mut task = task::new((0, 0));
     task.name = Some(std::str::Owned(unsafe {CString::new(name, false).as_str().unwrap().to_string()}));
-
-    unsafe {
-        rt::stack::record_stack_bounds(my_stack_bottom, my_stack_top);
-    }
 
     Local::put(task);
 }
@@ -87,6 +70,11 @@ pub static mut db_sender: *Sender<int> = 0 as *Sender<int>;
 
 #[no_mangle]
 pub extern fn rust_main() {
+    /*
+    let ref mut w = std::io::stdout();
+    std::rt::backtrace::write(w);
+    */
+
     println!("Hello from Rust!");
     
     // Hashmap - testing rand module works
@@ -131,7 +119,7 @@ pub extern fn rust_main() {
     let _ = rx.recv();
 
     unsafe {
-        for i in iter::range(0, 10) {
+        for i in iter::range(1, 10) {
             (*db_sender).send(i);
         }
     }
