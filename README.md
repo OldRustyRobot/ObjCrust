@@ -14,11 +14,12 @@ Based on [doublec/rust-from-c-example](https://github.com/doublec/rust-from-c-ex
 What works:
 
 - compiles with standard library + native runtime
-
+- green/rustuv runtime
+- fat libraries for simulator + device (see `Makefile` how to setup it)
+ 
 What doesn't work yet:
 
-- green/rustuv runtime
-- fat libraries for simulator + device
+- 64bit is not yet supported
 
 ## Usage
 
@@ -31,5 +32,5 @@ What doesn't work yet:
 7. Build and run in Xcode
 
 Note that for correct standard library work the code should be wrapped
-into a runtime start function (like try_init does now), which
+into a runtime start function (like `try_init does` now), which
 internally initializes runtime and tasks.
