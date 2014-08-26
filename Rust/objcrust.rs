@@ -1,6 +1,5 @@
 #![crate_type = "staticlib"]
 
-extern crate std;
 extern crate native;
 extern crate libc;
 extern crate collections;
@@ -15,6 +14,7 @@ use std::rt::unwind::try;
 use std::rt::task::Task;
 use std::rt::local::Local;
 use std::c_str::CString;
+use std::time::Duration;
 use native::task;
 
 fn ignore_sigpipe() {
@@ -43,7 +43,7 @@ fn run_proc_in_task(f: || -> ()) {
 // using std libs as most of them rely on correct
 // runtime initialization
 #[no_mangle]
-pub extern fn register_task(name: *c_char) {
+pub extern fn register_task(name: *const c_char) {
     ignore_sigpipe();
 
     rt::init(0, std::ptr::null());
@@ -66,7 +66,7 @@ pub extern fn run_rust_main() {
     let _ = unsafe { try(|| { rust_main() }) };
 }
 
-pub static mut db_sender: *Sender<int> = 0 as *Sender<int>;
+pub static mut db_sender: *mut Sender<int> = 0 as *mut Sender<int>;
 
 #[no_mangle]
 pub extern fn rust_main() {
@@ -76,12 +76,12 @@ pub extern fn rust_main() {
     */
 
     println!("Hello from Rust!");
-    
+
     // Hashmap - testing rand module works
     let mut dict = HashMap::new();
-    dict.insert(3, 4);
-    dict.insert(4, 6);
-    
+    dict.insert(3i, 4i);
+    dict.insert(4i, 6i);
+
     // Using channels
     let (tx, rx) = channel();
 
@@ -98,34 +98,33 @@ pub extern fn rust_main() {
         tx.send(sender);
 
         println!("In daemon receiver");
-        std::io::timer::sleep(3000);
+        std::io::timer::sleep(Duration::seconds(3));
 
-        let mut z = 0;
+        let mut z = 0i;
 
         loop {
             let i = receiver.recv();
-            if i == 0 {
+            if i == 0i {
                 break;
             } else {
                 println!("Task got {} [{}]", i, z);
-                z += 1;
+                z += 1i;
             }
         }
 
         println!("Exiting daemon receiver");
     });
 
-
     let _ = rx.recv();
 
     unsafe {
-        for i in iter::range(1, 10) {
+        for i in iter::range(1i, 10) {
             (*db_sender).send(i);
         }
     }
 
     let (tx, rx) = channel();
-    tx.send(200);
+    tx.send(200i);
     spawn(proc() {
         let t = rx.recv();
         println!("Got {} from main thread", t);
