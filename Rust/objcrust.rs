@@ -5,10 +5,8 @@ extern crate collections;
 
 use std::collections::HashMap;
 use std::comm::{channel, Sender};
-
-use std::iter;
+use std::thread::Thread;
 use std::time::Duration;
-
 
 pub static mut db_sender: *mut Sender<int> = 0 as *mut Sender<int>;
 
@@ -24,7 +22,7 @@ pub extern fn rust_main() {
     // Using channels
     let (tx, rx) = channel();
 
-    spawn(move || {
+    Thread::spawn(move || {
         let (sender, receiver) = channel::<int>();
 
         // Testing if global variable will live
@@ -52,23 +50,24 @@ pub extern fn rust_main() {
         }
 
         println!("Exiting daemon receiver");
-    });
+    }).detach();
 
     let _ = rx.recv();
 
     unsafe {
-        for i in iter::range(1i, 10) {
+        for i in range(1i, 10) {
             (*db_sender).send(i);
         }
     }
 
     let (tx, rx) = channel();
     tx.send(200i);
-    spawn(move || {
+    Thread::spawn(move || {
         let t = rx.recv();
         println!("Got {} from main thread", t);
-        panic!()
-    });
+        panic!();
+        () // for better type interferrence
+    }).detach();
 }
 
 #[deriving(Copy)]
