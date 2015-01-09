@@ -1,7 +1,6 @@
 
 #import <CoreGraphics/CoreGraphics.h>
 
-
 typedef struct {
     unsigned foo;
     unsigned bar;

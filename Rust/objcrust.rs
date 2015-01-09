@@ -1,16 +1,15 @@
 #![crate_type = "staticlib"]
+#![feature(box_syntax)]
+#![allow(unstable)]
 
 extern crate libc;
-extern crate collections;
 
 use std::collections::HashMap;
-use std::comm::{channel, Sender};
-
-use std::iter;
+use std::sync::mpsc::{channel, Sender};
+use std::thread::Thread;
 use std::time::Duration;
 
-
-pub static mut db_sender: *mut Sender<int> = 0 as *mut Sender<int>;
+pub static mut db_sender: *mut Sender<i32> = 0 as *mut Sender<i32>;
 
 #[no_mangle]
 pub extern fn rust_main() {
@@ -18,14 +17,14 @@ pub extern fn rust_main() {
 
     // Hashmap - testing rand module works
     let mut dict = HashMap::new();
-    dict.insert(3i, 4i);
-    dict.insert(4i, 6i);
+    dict.insert(3, 4);
+    dict.insert(4, 6);
 
     // Using channels
     let (tx, rx) = channel();
 
-    spawn(move || {
-        let (sender, receiver) = channel::<int>();
+    Thread::spawn(move || {
+        let (sender, receiver) = channel::<i32>();
 
         // Testing if global variable will live
         // all the time as boxed value
@@ -34,57 +33,48 @@ pub extern fn rust_main() {
             db_sender = std::mem::transmute(x);
         }
 
-        tx.send(sender);
+        tx.send(sender).unwrap();
 
         println!("In daemon receiver");
         std::io::timer::sleep(Duration::seconds(3));
 
-        let mut z = 0i;
-
         loop {
-            let i = receiver.recv();
-            if i == 0i {
+            let i = receiver.recv().unwrap();
+            if i == 0 {
                 break;
             } else {
-                println!("Task got {} [{}]", i, z);
-                z += 1i;
+                println!("Task got {}", i);
             }
         }
 
         println!("Exiting daemon receiver");
     });
 
-    let _ = rx.recv();
+    rx.recv().unwrap();
 
     unsafe {
-        for i in iter::range(1i, 10) {
-            (*db_sender).send(i);
+        for i in range(1, 10) {
+            (*db_sender).send(i).unwrap();
         }
+
+        (*db_sender).send(0).unwrap();
     }
-
-    let (tx, rx) = channel();
-    tx.send(200i);
-    spawn(move || {
-        let t = rx.recv();
-        println!("Got {} from main thread", t);
-        panic!()
-    });
 }
 
-#[deriving(Copy)]
+#[derive(Copy)]
 pub struct Pair {
-    foo: uint,
-    bar: uint,
+    foo: u32,
+    bar: u32,
 }
 
-#[deriving(Copy)]
+#[derive(Copy)]
 pub struct Complex {
     real: f64,
     img: f64,
 }
 
 #[no_mangle]
-pub extern fn get_num() -> uint {
+pub extern fn get_num() -> u32 {
     32
 }
 
@@ -94,22 +84,22 @@ pub extern fn get_float() -> f64 {
 }
 
 #[no_mangle]
-pub extern fn inc_num(x: uint) -> uint {
+pub extern fn inc_num(x: u32) -> u32 {
     x + 1
 }
 
 #[no_mangle]
-pub extern fn add_nums(num1: uint, num2: uint) -> uint {
+pub extern fn add_nums(num1: u32, num2: u32) -> u32 {
     num1 + num2
 }
 
 #[no_mangle]
-pub extern fn get_num_ptr(num: &uint) -> uint {
+pub extern fn get_num_ptr(num: &u32) -> u32 {
     *num
 }
 
 #[no_mangle]
-pub extern fn inc_num_ptr(num: &mut uint) -> uint {
+pub extern fn inc_num_ptr(num: &mut u32) -> u32 {
     *num += 1;
     *num
 }

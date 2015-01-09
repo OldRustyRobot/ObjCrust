@@ -1,6 +1,6 @@
 RUSTC = /usr/local/bin/rustc
 RUST_FLAGS=-O
-TARGETS=arm-apple-ios i386-apple-ios
+TARGETS=armv7-apple-ios i386-apple-ios armv7s-apple-ios aarch64-apple-ios x86_64-apple-ios
 LIB_NAME=libobjcrust-$(1).a
 ARCH_LIBS=$(foreach target,$(TARGETS),$(call LIB_NAME,$(target)))
 
