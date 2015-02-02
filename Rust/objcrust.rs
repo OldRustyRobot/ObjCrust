@@ -1,13 +1,16 @@
 #![crate_type = "staticlib"]
-#![feature(box_syntax)]
-#![allow(unstable)]
+#![feature(core)]
+#![feature(io)]
+#![feature(libc)]
+#![feature(std_misc)]
 
 extern crate libc;
 
 use std::collections::HashMap;
-use std::sync::mpsc::{channel, Sender};
+use std::old_io::timer::sleep;
 use std::thread::Thread;
 use std::time::Duration;
+use std::sync::mpsc::{channel, Sender};
 
 pub static mut db_sender: *mut Sender<i32> = 0 as *mut Sender<i32>;
 
@@ -29,14 +32,14 @@ pub extern fn rust_main() {
         // Testing if global variable will live
         // all the time as boxed value
         unsafe {
-            let x = box sender.clone();
+            let x = Box::new(sender.clone());
             db_sender = std::mem::transmute(x);
         }
 
         tx.send(sender).unwrap();
 
         println!("In daemon receiver");
-        std::io::timer::sleep(Duration::seconds(3));
+        sleep(Duration::seconds(3));
 
         loop {
             let i = receiver.recv().unwrap();
