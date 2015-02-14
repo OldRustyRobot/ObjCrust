@@ -3,8 +3,11 @@
 #![feature(io)]
 #![feature(libc)]
 #![feature(std_misc)]
+#![feature(path)]
 
 extern crate libc;
+
+use std::ffi::{c_str_to_bytes};
 
 use std::collections::HashMap;
 use std::old_io::timer::sleep;
@@ -156,4 +159,52 @@ pub extern fn inc_complex(comp: Complex) -> Complex {
 pub extern fn inc_complex_ptr(comp: &mut Complex) {
     comp.real += 1.0;
     comp.img += 1.0;
+}
+
+macro_rules! c_path {
+    ($v:expr) => (Path::new(c_string!($v)))
+}
+
+macro_rules! c_string {
+    ($v:expr) => (unsafe { String::from_utf8(c_str_to_bytes(&$v).to_vec()).unwrap() })
+}
+
+#[no_mangle]
+pub extern fn rw_file_io(path: *const libc::c_char) -> libc::c_int {
+    use std::old_io::{File, Truncate, ReadWrite};
+    use std::old_io::Writer;
+
+    let path = c_path!(path);
+    match File::open_mode(&path, Truncate, ReadWrite) {
+        Err(e) => {
+            println!("io: Failed to create file: {}", e);
+            -1
+        },
+        Ok(mut f) => {
+            f.write_all("HelloWorld".as_bytes()).unwrap();
+            println!("io: Everything ok");
+            0
+        }
+    }
+}
+
+#[no_mangle]
+pub extern fn rw_file_raw(path: *const libc::c_char) -> libc::c_int {
+    use libc;
+    use std::mem;
+
+    unsafe {
+        let fd = libc::open(path,
+                            libc::O_RDWR | libc::O_TRUNC | libc::O_CREAT,
+                            libc::S_IRUSR | libc::S_IWUSR);
+
+        if fd < 0 {
+            return fd;
+        }
+
+        let txt = "HelloWorld";
+        libc::write(fd, mem::transmute(txt.as_ptr()), txt.len() as libc::size_t);
+        libc::close(fd);
+    }
+    return 0;
 }

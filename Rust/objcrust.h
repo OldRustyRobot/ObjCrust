@@ -38,3 +38,6 @@ extern Complex get_complex();
 extern Complex inc_complex(Complex complex);
 
 extern void inc_complex_ptr(Complex *complex);
+
+extern int rw_file_io(const char *path);
+extern int rw_file_raw(const char *path);

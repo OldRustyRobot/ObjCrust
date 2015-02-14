@@ -42,6 +42,8 @@
 		C451C36518F858BF009A9597 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C451C36418F858BF009A9597 /* Security.framework */; };
 		C4A87DAE19477381009A9597 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C42EB7F818FBDBDB009A9597 /* Foundation.framework */; };
 		C4C3F87518F4638C009A9597 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B7326B21778B13900BE08F9 /* main.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		C4F8D9621A8F71BE009A9597 /* VHBFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F8D9601A8F71BE009A9597 /* VHBFilesViewController.m */; };
+		C4F8D9631A8F71BE009A9597 /* VHBFilesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4F8D9611A8F71BE009A9597 /* VHBFilesViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +99,9 @@
 		C42EB80918FBDBDB009A9597 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		C42EB82518FBE52A009A9597 /* libobjcrust.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libobjcrust.a; path = ../Rust/libobjcrust.a; sourceTree = "<group>"; };
 		C451C36418F858BF009A9597 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		C4F8D95F1A8F71BE009A9597 /* VHBFilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHBFilesViewController.h; sourceTree = "<group>"; };
+		C4F8D9601A8F71BE009A9597 /* VHBFilesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHBFilesViewController.m; sourceTree = "<group>"; };
+		C4F8D9611A8F71BE009A9597 /* VHBFilesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VHBFilesViewController.xib; path = ../Sources/VHBFilesViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +129,7 @@
 		2B391BB71778C81100FF53E7 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C4F8D9611A8F71BE009A9597 /* VHBFilesViewController.xib */,
 				2B7326AE1778B13900BE08F9 /* Info.plist */,
 				2B391BBC1778CEA800FF53E7 /* Localized */,
 				2B391BBB1778C97400FF53E7 /* Images */,
@@ -183,6 +189,8 @@
 		2B7326AC1778B13900BE08F9 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				C4F8D95F1A8F71BE009A9597 /* VHBFilesViewController.h */,
+				C4F8D9601A8F71BE009A9597 /* VHBFilesViewController.m */,
 				2B7326B21778B13900BE08F9 /* main.m */,
 				2B7326B51778B13900BE08F9 /* CRAppDelegate.h */,
 				2B7326B61778B13900BE08F9 /* CRAppDelegate.m */,
@@ -322,6 +330,7 @@
 				2B7326B91778B13900BE08F9 /* Default.png in Resources */,
 				2B7326BB1778B13900BE08F9 /* Default@2x.png in Resources */,
 				2B7326BD1778B13900BE08F9 /* Default-568h@2x.png in Resources */,
+				C4F8D9631A8F71BE009A9597 /* VHBFilesViewController.xib in Resources */,
 				2B1CEE5C177C924700AE7D4A /* Default-Landscape.png in Resources */,
 				2B1CEE5D177C924700AE7D4A /* Default-Landscape@2x.png in Resources */,
 				2B1CEE5E177C924700AE7D4A /* Default-Portrait.png in Resources */,
@@ -379,6 +388,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B43BA80187FD2FA0063A594 /* CRViewController.m in Sources */,
+				C4F8D9621A8F71BE009A9597 /* VHBFilesViewController.m in Sources */,
 				2B7326B71778B13900BE08F9 /* CRAppDelegate.m in Sources */,
 				C4C3F87518F4638C009A9597 /* main.m in Sources */,
 			);
