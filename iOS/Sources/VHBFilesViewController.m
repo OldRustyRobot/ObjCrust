@@ -80,6 +80,19 @@ int rw_file_native(char const *path) {
         }
     }
 
+    {
+        [output appendString:@"Writing rust raw (vararg):\n"];
+        NSUUID *rawVarArgUuid = [NSUUID UUID];
+
+        NSString *rawVarArgFile = [docFolder stringByAppendingPathComponent:rawVarArgUuid.UUIDString];
+        if (rw_file_raw_vararg(rawVarArgFile.UTF8String) < 0) {
+            [output appendFormat:@"Failed to write through raw (vararg): %@\n", rawVarArgUuid.UUIDString];
+        } else {
+            [output appendString:[self fileInfo:rawVarArgFile]];
+            [output appendString:@"\n\n"];
+        }
+    }
+
 
     {
         [output appendString:@"Writing native:\n"];

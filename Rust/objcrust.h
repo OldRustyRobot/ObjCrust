@@ -41,3 +41,4 @@ extern void inc_complex_ptr(Complex *complex);
 
 extern int rw_file_io(const char *path);
 extern int rw_file_raw(const char *path);
+extern int rw_file_raw_vararg(const char *path);
