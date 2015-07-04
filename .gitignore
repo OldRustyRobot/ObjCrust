@@ -19,3 +19,4 @@ DerivedData
 Rust/*.[ao]
 Rust/*.bc
 Rust/*.ia
+Rust/target/

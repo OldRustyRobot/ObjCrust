@@ -1,0 +1,11 @@
+[package]
+name = "objcrust"
+version = "0.1.0"
+authors = ["Valerii Hiora <valerii.hiora@gmail.com>"]
+
+[lib]
+name = "objcrust"
+crate-type = ["staticlib"]
+
+[dependencies]
+libc = "0.1"

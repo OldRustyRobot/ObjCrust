@@ -1,15 +1,7 @@
-#![crate_type = "staticlib"]
-#![feature(core)]
-#![feature(io)]
-#![feature(libc)]
-#![feature(std_misc)]
-
 extern crate libc;
 
 use std::collections::HashMap;
-use std::old_io::timer::sleep;
-use std::thread::Thread;
-use std::time::Duration;
+use std::thread;
 use std::sync::mpsc::{channel, Sender};
 
 pub static mut db_sender: *mut Sender<i32> = 0 as *mut Sender<i32>;
@@ -26,7 +18,7 @@ pub extern fn rust_main() {
     // Using channels
     let (tx, rx) = channel();
 
-    Thread::spawn(move || {
+    thread::spawn(move || {
         let (sender, receiver) = channel::<i32>();
 
         // Testing if global variable will live
@@ -39,7 +31,7 @@ pub extern fn rust_main() {
         tx.send(sender).unwrap();
 
         println!("In daemon receiver");
-        sleep(Duration::seconds(3));
+        thread::sleep_ms(3000);
 
         loop {
             let i = receiver.recv().unwrap();
@@ -56,7 +48,7 @@ pub extern fn rust_main() {
     rx.recv().unwrap();
 
     unsafe {
-        for i in range(1, 10) {
+        for i in 1..10 {
             (*db_sender).send(i).unwrap();
         }
 
@@ -64,13 +56,13 @@ pub extern fn rust_main() {
     }
 }
 
-#[derive(Copy)]
+#[derive(Clone, Copy)]
 pub struct Pair {
     foo: u32,
     bar: u32,
 }
 
-#[derive(Copy)]
+#[derive(Clone, Copy)]
 pub struct Complex {
     real: f64,
     img: f64,
